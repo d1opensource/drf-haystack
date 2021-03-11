@@ -28,7 +28,7 @@ Features
 
 Supported Python and Django versions:
 
-    - Python 2.7+ and Python 3.4+
+    - Python 3.5+
     - `All supported versions of Django <https://www.djangoproject.com/download/#supported-versions>`_
 
 
@@ -100,10 +100,40 @@ This library has mainly been written by `me <https://github.com/rhblind>`_ while
 at `Inonit <https://github.com/inonit>`_. I have also had some help from these amazing people!
 Thanks guys!
 
-    - See the full list of `contributors <https://github.com/inonit/drf-haystack/graphs/contributors>`_.
+    - See the full list of `contributors <https://github.com/rhblind/drf-haystack/graphs/contributors>`_.
 
 Changelog
 =========
+
+v1.8.9
+------
+*Release date: 2020-10-05*
+
+    - Updated supported Django versions
+
+
+v1.8.8
+------
+*Release date: 2020-09-28*
+
+    - Updated supported DRF versions
+
+
+v1.8.7
+------
+*Release date: 2020-08-01*
+
+    - Updated supported Python, Haystack and DRF versions
+
+
+v1.8.6
+------
+*Release date: 2019-10-13*
+
+    - Fixed :drf-issue:`139`. Overriding declared fields must now use ``serializers.SerializerMethodField()`` and are
+      handled by stock DRF. We don't need any custom functionality for this.
+    - Added support for Django REST Framework v3.10.x
+    - Dropped Python 2.x support
 
 v1.8.5
 ------
@@ -123,13 +153,13 @@ v1.8.3
 ------
 *Release date: 2018-06-16*
 
-    - Fixed issues with `__in=[...]` and `__range=[...]` filters. Closes :drf-issue:`128`.
+    - Fixed issues with ``__in=[...]`` and ``__range=[...]`` filters. Closes :drf-issue:`128`.
 
 v1.8.2
 ------
 *Release date: 2018-05-22*
 
-    - Fixed issue with `_get_count` for DRF v3.8
+    - Fixed issue with ``_get_count`` for DRF v3.8
 
 v1.8.1
 ------
@@ -332,4 +362,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-

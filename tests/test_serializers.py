@@ -12,7 +12,6 @@ import six
 from django.conf.urls import url, include
 from django.core.exceptions import ImproperlyConfigured
 from django.http import QueryDict
-from django.utils import six
 from django.test import TestCase, SimpleTestCase, override_settings
 from haystack.query import SearchQuerySet
 
@@ -87,8 +86,8 @@ class SearchPersonFacetViewSet(FacetMixin, HaystackViewSet):
 
 
 router = DefaultRouter()
-router.register("search-person-mlt", viewset=SearchPersonMLTViewSet, base_name="search-person-mlt")
-router.register("search-person-facet", viewset=SearchPersonFacetViewSet, base_name="search-person-facet")
+router.register("search-person-mlt", viewset=SearchPersonMLTViewSet, basename="search-person-mlt")
+router.register("search-person-facet", viewset=SearchPersonFacetViewSet, basename="search-person-facet")
 
 urlpatterns = [
     url(r"^", include(router.urls))
@@ -106,16 +105,16 @@ class HaystackSerializerTestCase(WarningTestCaseMixin, TestCase):
         class Serializer1(HaystackSerializer):
 
             integer_field = serializers.IntegerField()
-            city = serializers.CharField()
+            city = serializers.SerializerMethodField()
 
             class Meta:
                 index_classes = [MockPersonIndex]
                 fields = ["text", "firstname", "lastname", "autocomplete"]
 
-            def get_integer_field(self, obj):
+            def get_integer_field(self, instance):
                 return 1
 
-            def get_city(self, obj):
+            def get_city(self, instance):
                 return "Declared overriding field"
 
         class Serializer2(HaystackSerializer):
@@ -204,6 +203,12 @@ class HaystackSerializerTestCase(WarningTestCaseMixin, TestCase):
         self.assertTrue(dog.data["has_rabies"])
         self.assertFalse(iguana.data["has_rabies"])
 
+    def test_serializer_declared_field_overrides(self):
+        obj = SearchQuerySet().filter(lastname="Foreman")[0]
+        serializer = self.serializer1(instance=obj)
+
+        self.assertEqual(serializer.data['city'], "Declared overriding field")
+
 
 class HaystackSerializerAllFieldsTestCase(TestCase):
 
@@ -256,17 +261,17 @@ class HaystackSerializerMultipleIndexTestCase(WarningTestCaseMixin, TestCase):
             """
             Multiple index serializer with declared fields
             """
-            _MockPersonIndex__hair_color = serializers.CharField()
-            extra = serializers.IntegerField()
+            _MockPersonIndex__hair_color = serializers.SerializerMethodField()
+            extra = serializers.SerializerMethodField()
 
             class Meta:
                 index_classes = [MockPersonIndex, MockPetIndex]
                 exclude = ["firstname"]
 
-            def get__MockPersonIndex__hair_color(self):
+            def get__MockPersonIndex__hair_color(self, instance):
                 return "black"
 
-            def get_extra(self):
+            def get_extra(self, instance):
                 return 1
 
         class Serializer3(HaystackSerializer):

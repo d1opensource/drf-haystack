@@ -4,8 +4,8 @@ Haystack for Django REST Framework
 Build status
 ------------
 
-[![Build Status](https://travis-ci.org/inonit/drf-haystack.svg?branch=master)](https://travis-ci.org/inonit/drf-haystack)
-[![Coverage Status](https://coveralls.io/repos/github/inonit/drf-haystack/badge.svg?branch=master)](https://coveralls.io/github/inonit/drf-haystack?branch=master)
+[![Build Status](https://travis-ci.org/rhblind/drf-haystack.svg?branch=master)](https://travis-ci.org/rhblind/drf-haystack)
+[![Coverage Status](https://coveralls.io/repos/github/rhblind/drf-haystack/badge.svg?branch=master)](https://coveralls.io/github/rhblind/drf-haystack?branch=master)
 [![PyPI version](https://badge.fury.io/py/drf-haystack.svg)](https://badge.fury.io/py/drf-haystack)
 [![Documentation Status](https://readthedocs.org/projects/drf-haystack/badge/?version=latest)](http://drf-haystack.readthedocs.io/en/latest/?badge=latest)
 
@@ -19,8 +19,8 @@ Fresh [documentation available](https://drf-haystack.readthedocs.io/en/latest/) 
 Supported versions
 ------------------
 
-- Python 2.7, 3.4 and above
-- Django 1.11 and 2.0-2.2
+- Python 3.5 and above
+- Django 2.2 and 3.0
 - Haystack 2.8 and above
 - Django REST Framework 3.7 and above
 

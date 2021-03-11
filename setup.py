@@ -24,18 +24,18 @@ setup(
     description="Makes Haystack play nice with Django REST Framework",
     long_description="Implements a ViewSet, FiltersBackends and Serializers in order to play nice with Haystack.",
     author="Rolf Håvard Blindheim",
-    author_email="rolf.blindheim@inonit.no",
-    url="https://github.com/inonit/drf-haystack",
-    download_url="https://github.com/inonit/drf-haystack.git",
+    author_email="rhblind@gmail.com",
+    url="https://github.com/rhblind/drf-haystack",
+    download_url="https://github.com/rhblind/drf-haystack.git",
     license="MIT License",
     packages=[
         "drf_haystack",
     ],
     include_package_data=True,
     install_requires=[
-        "Django>=1.11,<2.3",
-        "djangorestframework>=3.7,<3.10",
-        "django-haystack>=2.8,<2.9",
+        "Django>=2.2,<3.2",
+        "djangorestframework>=3.7,<3.13",
+        "django-haystack>=2.8,<3.1",
         "python-dateutil"
     ],
     tests_require=[
@@ -51,7 +51,6 @@ setup(
         "Framework :: Django",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
-        "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 3",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ]
