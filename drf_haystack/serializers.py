@@ -17,7 +17,10 @@ from django.core.exceptions import ImproperlyConfigured, FieldDoesNotExist
 
 from haystack import fields as haystack_fields
 from haystack.query import EmptySearchQuerySet
-from haystack.utils.highlighting import Highlighter
+try:
+    from haystack.utils.highlighting import Highlighter
+except:
+    from haystack.utils import Highlighter
 
 from rest_framework import serializers
 from rest_framework.fields import empty
