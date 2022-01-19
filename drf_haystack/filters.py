@@ -1,9 +1,4 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import absolute_import, unicode_literals
-
 import operator
-import six
 from functools import reduce
 
 from django.core.exceptions import ImproperlyConfigured
@@ -61,7 +56,7 @@ class BaseHaystackFilterBackend(BaseFilterBackend):
         return self.apply_filters(
             queryset=queryset,
             applicable_filters=self.process_filters(applicable_filters, queryset, view),
-            applicable_exclusions=self.process_filters(applicable_exclusions, queryset, view)
+            applicable_exclusions=self.process_filters(applicable_exclusions, queryset, view),
         )
 
     def get_query_builder(self, *args, **kwargs):
@@ -113,11 +108,9 @@ class HaystackAutocompleteFilter(HaystackFilter):
         for field_name, query in filters.children:
             for word in query.split(" "):
                 bit = queryset.query.clean(word.strip())
-                kwargs = {
-                    field_name: bit
-                }
+                kwargs = {field_name: bit}
                 query_bits.append(view.query_object(**kwargs))
-        return six.moves.reduce(operator.and_, filter(lambda x: x, query_bits))
+        return reduce(operator.and_, filter(lambda x: x, query_bits))
 
 
 class HaystackGEOSpatialFilter(BaseHaystackFilterBackend):
@@ -224,7 +217,9 @@ class HaystackOrderingFilter(OrderingFilter):
     Some docstring here!
     """
 
-    def get_default_valid_fields(self, queryset, view, context={}):
+    def get_default_valid_fields(self, queryset, view, context=None):
+        if context is None:
+            context = {}
         valid_fields = super(HaystackOrderingFilter, self).get_default_valid_fields(queryset, view, context)
 
         # Check if we need to support aggregate serializers
@@ -234,7 +229,9 @@ class HaystackOrderingFilter(OrderingFilter):
 
         return valid_fields
 
-    def get_valid_fields(self, queryset, view, context={}):
+    def get_valid_fields(self, queryset, view, context=None):
+        if context is None:
+            context = {}
         valid_fields = getattr(view, "ordering_fields", self.ordering_fields)
 
         if valid_fields is None:
@@ -247,16 +244,14 @@ class HaystackOrderingFilter(OrderingFilter):
                     "Cannot use %s with '__all__' as 'ordering_fields' attribute on a view "
                     "which has no 'index_models' set. Either specify some 'ordering_fields', "
                     "set the 'index_models' attribute or override the 'get_queryset' "
-                    "method and pass some 'index_models'."
-                    % self.__class__.__name__)
+                    "method and pass some 'index_models'." % self.__class__.__name__
+                )
 
-            model_fields = map(lambda model: [(field.name, field.verbose_name) for field in model._meta.fields],
-                               queryset.query.models)
+            model_fields = map(
+                lambda model: [(field.name, field.verbose_name) for field in model._meta.fields], queryset.query.models
+            )
             valid_fields = list(set(reduce(operator.concat, model_fields)))
         else:
-            valid_fields = [
-                (item, item) if isinstance(item, six.string_types) else item
-                for item in valid_fields
-            ]
+            valid_fields = [(item, item) if isinstance(item, str) else item for item in valid_fields]
 
         return valid_fields

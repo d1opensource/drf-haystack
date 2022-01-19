@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import absolute_import, unicode_literals
-
-import six
-
 from django.contrib.contenttypes.models import ContentType
 from django.http import Http404
 
@@ -18,6 +12,7 @@ class HaystackGenericAPIView(GenericAPIView):
     """
     Base class for all haystack generic views.
     """
+
     # Use `index_models` to filter on which search index models we
     # should include in the search result.
     index_models = []
@@ -38,7 +33,7 @@ class HaystackGenericAPIView(GenericAPIView):
 
     filter_backends = [HaystackFilter]
 
-    def get_queryset(self, index_models=[]):
+    def get_queryset(self, index_models=None):
         """
         Get the list of items for this view.
         Returns ``self.queryset`` if defined and is a ``self.object_class``
@@ -46,6 +41,8 @@ class HaystackGenericAPIView(GenericAPIView):
 
         @:param index_models: override `self.index_models`
         """
+        if index_models is None:
+            index_models = []
         if self.queryset is not None and isinstance(self.queryset, self.object_class):
             queryset = self.queryset.all()
         else:
@@ -72,12 +69,14 @@ class HaystackGenericAPIView(GenericAPIView):
         queryset = self.get_queryset()
         if "model" in self.request.query_params:
             try:
-                app_label, model = map(six.text_type.lower, self.request.query_params["model"].split(".", 1))
+                app_label, model = map(str.lower, self.request.query_params["model"].split(".", 1))
                 ctype = ContentType.objects.get(app_label=app_label, model=model)
                 queryset = self.get_queryset(index_models=[ctype.model_class()])
             except (ValueError, ContentType.DoesNotExist):
-                raise Http404("Could not find any models matching '%s'. Make sure to use a valid "
-                              "'app_label.model' name for the 'model' query parameter." % self.request.query_params["model"])
+                raise Http404(
+                    "Could not find any models matching '%s'. Make sure to use a valid "
+                    "'app_label.model' name for the 'model' query parameter." % self.request.query_params["model"]
+                )
 
         lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
         if lookup_url_kwarg not in self.kwargs:
@@ -97,7 +96,7 @@ class HaystackGenericAPIView(GenericAPIView):
 
     def filter_queryset(self, queryset):
         queryset = super(HaystackGenericAPIView, self).filter_queryset(queryset)
-        
+
         if self.load_all:
             queryset = queryset.load_all()
 

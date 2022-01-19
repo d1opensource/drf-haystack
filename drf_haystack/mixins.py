@@ -1,14 +1,10 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import absolute_import, unicode_literals
-
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from drf_haystack.filters import HaystackFacetFilter
 
 
-class MoreLikeThisMixin(object):
+class MoreLikeThisMixin:
     """
     Mixin class for supporting "more like this" on an API View.
     """
@@ -33,7 +29,7 @@ class MoreLikeThisMixin(object):
         return Response(serializer.data)
 
 
-class FacetMixin(object):
+class FacetMixin:
     """
     Mixin class for supporting faceting on an API View.
     """
@@ -41,7 +37,7 @@ class FacetMixin(object):
     facet_filter_backends = [HaystackFacetFilter]
     facet_serializer_class = None
     facet_objects_serializer_class = None
-    facet_query_params_text = 'selected_facets'
+    facet_query_params_text = "selected_facets"
 
     @action(detail=False, methods=["get"], url_path="facets")
     def facets(self, request):
@@ -85,10 +81,12 @@ class FacetMixin(object):
 
         facet_serializer_class = self.get_facet_serializer_class()
         kwargs["context"] = self.get_serializer_context()
-        kwargs["context"].update({
-            "objects": kwargs.pop("objects"),
-            "facet_query_params_text": self.facet_query_params_text,
-        })
+        kwargs["context"].update(
+            {
+                "objects": kwargs.pop("objects"),
+                "facet_query_params_text": self.facet_query_params_text,
+            }
+        )
         return facet_serializer_class(*args, **kwargs)
 
     def get_facet_serializer_class(self):
@@ -99,8 +97,7 @@ class FacetMixin(object):
         if self.facet_serializer_class is None:
             raise AttributeError(
                 "%(cls)s should either include a `facet_serializer_class` attribute, "
-                "or override %(cls)s.get_facet_serializer_class() method." %
-                {"cls": self.__class__.__name__}
+                "or override %(cls)s.get_facet_serializer_class() method." % {"cls": self.__class__.__name__}
             )
         return self.facet_serializer_class
 

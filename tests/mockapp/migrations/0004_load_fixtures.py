@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import os
 
 from django.core import serializers
@@ -29,6 +26,7 @@ def load_data(apps, schema_editor):
         for obj in objects:
             obj.save()
 
+
 def unload_data(apps, schema_editor):
     """
     Unload fixtures for MockPerson, MockPet and MockLocation
@@ -52,6 +50,4 @@ class Migration(migrations.Migration):
         ("mockapp", "0003_mockpet"),
     ]
 
-    operations = [
-        migrations.RunPython(load_data, reverse_code=unload_data)
-    ]
+    operations = [migrations.RunPython(load_data, reverse_code=unload_data)]

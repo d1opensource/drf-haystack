@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import absolute_import, unicode_literals
-
 from datetime import datetime, timedelta
 from rest_framework.serializers import HyperlinkedIdentityField
 
@@ -10,12 +6,18 @@ from .search_indexes import MockPersonIndex, MockLocationIndex
 
 
 class SearchSerializer(HaystackSerializer):
-
     class Meta:
         index_classes = [MockPersonIndex, MockLocationIndex]
         fields = [
-            "firstname", "lastname", "birthdate", "full_name", "text",
-            "address", "city", "zip_code", "highlighted"
+            "firstname",
+            "lastname",
+            "birthdate",
+            "full_name",
+            "text",
+            "address",
+            "city",
+            "zip_code",
+            "highlighted",
         ]
 
 
@@ -26,10 +28,7 @@ class HighlighterSerializer(HighlighterMixin, HaystackSerializer):
 
     class Meta:
         index_classes = [MockPersonIndex, MockLocationIndex]
-        fields = [
-            "firstname", "lastname", "full_name",
-            "address", "city", "zip_code", "coordinates"
-        ]
+        fields = ["firstname", "lastname", "full_name", "address", "city", "zip_code", "coordinates"]
 
 
 class MoreLikeThisSerializer(HaystackSerializer):
@@ -38,10 +37,7 @@ class MoreLikeThisSerializer(HaystackSerializer):
 
     class Meta:
         index_classes = [MockPersonIndex]
-        fields = [
-            "firstname", "lastname", "full_name",
-            "autocomplete"
-        ]
+        fields = ["firstname", "lastname", "full_name", "autocomplete"]
 
 
 class MockPersonFacetSerializer(HaystackFacetSerializer):
@@ -58,6 +54,6 @@ class MockPersonFacetSerializer(HaystackFacetSerializer):
                 "start_date": datetime.now() - timedelta(days=3 * 365),
                 "end_date": datetime.now(),
                 "gap_by": "day",
-                "gap_amount": 10
-            }
+                "gap_amount": 10,
+            },
         }

@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import absolute_import, unicode_literals
-
 from django.utils import timezone
 from haystack import indexes
 
@@ -20,17 +16,13 @@ class MockLocationIndex(indexes.SearchIndex, indexes.Indexable):
 
     @staticmethod
     def prepare_autocomplete(obj):
-        return " ".join((
-            obj.address, obj.city, obj.zip_code
-        ))
+        return " ".join((obj.address, obj.city, obj.zip_code))
 
     def get_model(self):
         return MockLocation
 
     def index_queryset(self, using=None):
-        return self.get_model().objects.filter(
-            created__lte=timezone.now()
-        )
+        return self.get_model().objects.filter(created__lte=timezone.now())
 
 
 class MockPersonIndex(indexes.SearchIndex, indexes.Indexable):
@@ -66,9 +58,7 @@ class MockPersonIndex(indexes.SearchIndex, indexes.Indexable):
         return MockPerson
 
     def index_queryset(self, using=None):
-        return self.get_model().objects.filter(
-            created__lte=timezone.now()
-        )
+        return self.get_model().objects.filter(created__lte=timezone.now())
 
 
 class MockPetIndex(indexes.SearchIndex, indexes.Indexable):
@@ -111,7 +101,7 @@ class MockAllFieldIndex(indexes.SearchIndex, indexes.Indexable):
 
     @staticmethod
     def prepare_multivaluefield(obj):
-        return obj.charfield.split(' ', 1)
+        return obj.charfield.split(" ", 1)
 
     def get_model(self):
         return MockAllField

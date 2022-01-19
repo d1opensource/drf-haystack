@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import absolute_import, unicode_literals
-
 import pytz
 from datetime import date, datetime, timedelta
 from random import randrange, randint
@@ -13,7 +9,7 @@ def get_random_date(start=date(1950, 1, 1), end=date.today()):
     """
     :return a random date between `start` and `end`
     """
-    delta = ((end - start).days * 24 * 60 * 60)
+    delta = (end - start).days * 24 * 60 * 60
     return start + timedelta(seconds=randrange(delta))
 
 
@@ -21,7 +17,7 @@ def get_random_datetime(start=datetime(1950, 1, 1, 0, 0), end=datetime.today()):
     """
     :return a random datetime
     """
-    delta = ((end - start).total_seconds())
+    delta = (end - start).total_seconds()
     return (start + timedelta(seconds=randint(0, int(delta)))).replace(tzinfo=pytz.UTC)
 
 
